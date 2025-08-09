@@ -133,7 +133,7 @@ function confirmarAsistencia() {
     const pases = 3;  // Aquí puedes obtener la cantidad de pases de forma dinámica
 
     const mensaje = `Hola, soy ${invitado} y confirmo mi asistencia con ${pases} pases para la fiesta de quince años de Andria.`;
-    const numeroTelefono = '50236011737'; // Reemplaza con el número de WhatsApp al cual se enviará el mensaje
+    const numeroTelefono = '50255375648'; // Reemplaza con el número de WhatsApp al cual se enviará el mensaje
 
     const enlaceWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
     
