@@ -56,8 +56,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 140px;
-    height: 140px;
+    width: 135px;
+    height: 135px;
     background: rgb(221, 148, 173);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.216);
     border-radius: 50%;
@@ -161,7 +161,7 @@ body {
     padding: 15px;
     font-weight: 400;
     font-style: italic;
-    font-size: 40px;
+    font-size: 35px;
     margin-top: -10px;
     margin-bottom: -10px;
     color: var(--color-1);
@@ -241,7 +241,7 @@ body {
     font-family: var(--font-1);
     font-weight: 400;
     font-style: italic;
-    font-size: 24px;
+    font-size: 22px;
     padding: 7px;
 }
 .section-countdown h2 {
@@ -364,7 +364,7 @@ body {
     font-family: var(--font-1);
     font-style: italic;
     font-weight: 400;
-    font-size: 28px;
+    font-size: 24px;
     color: var(--color-1);
    margin: 0;
 }
@@ -372,7 +372,7 @@ body {
     font-family: var(--font-1);
     font-style: italic;
     font-weight: 400;
-    font-size: 28px;
+    font-size: 24px;
     color: var(--color-1);
 }
 .section-b h1, .section-b h2, .section-b h3{
@@ -380,7 +380,7 @@ body {
     padding: 15px;
     font-weight: 400;
     font-style: italic;
-    font-size: 40px;
+    font-size: 35px;
     margin-top: -10px;
     margin-bottom: -10px;
     color: SaddleBrown;
@@ -391,7 +391,7 @@ body {
     padding: 10px;
     font-weight: 400;
     font-style: italic;
-    font-size: 40px;
+    font-size: 35px;
     margin-top: 20px;
     margin-bottom: 10px;
     color: var(--color-1);
@@ -401,7 +401,7 @@ body {
     font-family: var(--font-1);
     font-style: italic;
     font-weight: 400;
-    font-size: 24px;
+    font-size: 22px;
     padding: 5px;
     margin: 0;
     color: var(--color-1);
@@ -464,9 +464,9 @@ body {
 .close {
     position: absolute;
     top: 20px;
-    right: 40px;
+    right: 35px;
     color: #fff;
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -516,7 +516,7 @@ footer {
     margin-top: 0px;
 }
 /* Media Queries */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1022px) {
     /* iPad Styles */
     .seal{
         width: 200px;
