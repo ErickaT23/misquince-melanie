@@ -145,23 +145,27 @@ function closeModal(event) {
         });
     });
 
-    //Funcion para confirmar la asistencia 
-    function confirmarAsistencia() {
-        const nombreDOM = document.getElementById('nombreInvitado')?.innerText?.trim();
-        const pasesText = document.getElementById('cantidadPases')?.innerText || '';
-        const match = pasesText.match(/(\d+)/);
-        let pases = match ? parseInt(match[1], 10) : undefined;
-      
-        const invitado = window.__invitadoActual || {};
-        const nombre = nombreDOM || invitado.nombre || 'Invitado';
-        if (!Number.isFinite(pases)) pases = Number.isFinite(invitado.pases) ? invitado.pases : 1;
-      
-        const mensaje = `Hola, somos ${nombre} y confirmamos nuestra asistencia a los quince de nuestra querida Melanie con nuestros ${pases} pases asignados.`;
-        const numeroTelefono = '50255375648';
-      
-        const enlaceWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
-        window.open(enlaceWhatsapp, '_blank');
-      }
+// Función para confirmar la asistencia (maneja singular/plural)
+function confirmarAsistencia() {
+    const nombreDOM = document.getElementById('nombreInvitado')?.innerText?.trim();
+    const pasesText = document.getElementById('cantidadPases')?.innerText || '';
+    const match = pasesText.match(/(\d+)/);
+    let pases = match ? parseInt(match[1], 10) : undefined;
+  
+    const invitado = window.__invitadoActual || {};
+    const nombre = nombreDOM || invitado.nombre || 'Invitado';
+    if (!Number.isFinite(pases)) pases = Number.isFinite(invitado.pases) ? invitado.pases : 1;
+  
+    // Construcción del mensaje según la cantidad de pases
+    const mensaje = (pases === 1)
+      ? `Hola, soy ${nombre} y confirmo mi asistencia a los quince de nuestra querida Melanie con 1 pase asignado.`
+      : `Hola, somos ${nombre} y confirmamos nuestra asistencia a los quince de nuestra querida Melanie con ${pases} pases asignados.`;
+  
+    const numeroTelefono = '50255375648';
+    const enlaceWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
+    window.open(enlaceWhatsapp, '_blank');
+  }
+  
       
 //Funcion para abrir waze o maps
 //iglesia
