@@ -33,31 +33,49 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Función para obtener datos de invitados (sin inputs)
-function cargarDatosInvitado() {
+// Carga datos de invitado desde invitados.json según ?id=123
+async function cargarDatosInvitado() {
     const params = new URLSearchParams(window.location.search);
     const invitadoId = params.get('id');
-
     if (!invitadoId) {
-        alert('ID de invitado no encontrado en el enlace.');
-        return;
+      console.warn('ID de invitado no encontrado en el enlace.');
+      return;
     }
-
-    // Base de datos simulada
-    const invitados = {
-        '1': { nombre: 'Ana Pérez', pases: 3 },
-        '2': { nombre: 'Luis García', pases: 2 },
-        '3': { nombre: 'María López', pases: 4 }
-    };
-
-    const invitado = invitados[invitadoId];
-
-    if (invitado) {
-        document.getElementById('nombreInvitado').innerText = invitado.nombre;
-        document.getElementById('cantidadPases').innerText = `Pases: ${invitado.pases}`;
-    } else {
-        alert('Invitado no encontrado.');
+  
+    try {
+      // Ajusta la ruta si tu index no está en la raíz
+      const res = await fetch('invitados.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+  
+      const invitados = await res.json();
+      const invitado = invitados[invitadoId] || null;
+  
+      const nombreEl = document.getElementById('nombreInvitado');
+      const pasesEl  = document.getElementById('cantidadPases');
+  
+      // Nombre (ocultar si no hay)
+      if (invitado?.nombre && invitado.nombre.toLowerCase() !== 'sin nombre') {
+        nombreEl.innerText = invitado.nombre;
+        nombreEl.style.display = '';
+      } else {
+        nombreEl.style.display = 'none';
+      }
+  
+      // Pases (ocultar si no hay número)
+      if (Number.isFinite(invitado?.pases)) {
+        pasesEl.innerText = `Pases: ${invitado.pases}`;
+        pasesEl.style.display = '';
+      } else {
+        pasesEl.style.display = 'none';
+      }
+  
+      // Guarda en memoria por si lo necesitas en otras funciones
+      window.__invitadoActual = invitado;
+    } catch (e) {
+      console.error('No se pudo cargar invitados.json', e);
     }
-}
+  }
+  
 
 // Función para iniciar el contador de la fecha del evento
 function iniciarContador() {
@@ -105,41 +123,46 @@ function closeModal(event) {
     }
 }
 
-// Fade-in effect cuando los elementos se hacen visibles al hacer scroll
-document.addEventListener("DOMContentLoaded", function() {
-    const elementsToFade = document.querySelectorAll('.fade-in-element');
+    // Fade-in effect cuando los elementos se hacen visibles al hacer scroll
+    document.addEventListener("DOMContentLoaded", function() {
+        const elementsToFade = document.querySelectorAll('.fade-in-element');
 
-    const observerOptions = {
-        threshold: 0.5, // El porcentaje del elemento que debe ser visible antes de activar la animación
-    };
+        const observerOptions = {
+            threshold: 0.5, // El porcentaje del elemento que debe ser visible antes de activar la animación
+        };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Deja de observar una vez que la animación se activa
-            }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Deja de observar una vez que la animación se activa
+                }
+            });
+        }, observerOptions);
+
+        elementsToFade.forEach(element => {
+            observer.observe(element);
         });
-    }, observerOptions);
-
-    elementsToFade.forEach(element => {
-        observer.observe(element);
     });
-});
 
-//Funcion para confirmar la asistencia 
-function confirmarAsistencia() {
-    const invitado = "Ana Pérez";  // Aquí puedes obtener el nombre dinámicamente si es necesario
-    const pases = 3;  // Aquí puedes obtener la cantidad de pases de forma dinámica
-
-    const mensaje = `Hola, soy ${invitado} y confirmo mi asistencia con ${pases} pases para la fiesta de quince años de Andria.`;
-    const numeroTelefono = '50255375648'; // Reemplaza con el número de WhatsApp al cual se enviará el mensaje
-
-    const enlaceWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
-    
-    // Abre el enlace de WhatsApp
-    window.open(enlaceWhatsapp, '_blank');
-}
+    //Funcion para confirmar la asistencia 
+    function confirmarAsistencia() {
+        const nombreDOM = document.getElementById('nombreInvitado')?.innerText?.trim();
+        const pasesText = document.getElementById('cantidadPases')?.innerText || '';
+        const match = pasesText.match(/(\d+)/);
+        let pases = match ? parseInt(match[1], 10) : undefined;
+      
+        const invitado = window.__invitadoActual || {};
+        const nombre = nombreDOM || invitado.nombre || 'Invitado';
+        if (!Number.isFinite(pases)) pases = Number.isFinite(invitado.pases) ? invitado.pases : 1;
+      
+        const mensaje = `Hola, somos ${nombre} y confirmamos nuestra asistencia a los quince de nuestra querida Melanie con nuestros ${pases} pases asignados.`;
+        const numeroTelefono = '50255375648';
+      
+        const enlaceWhatsapp = `https://api.whatsapp.com/send?phone=${numeroTelefono}&text=${encodeURIComponent(mensaje)}`;
+        window.open(enlaceWhatsapp, '_blank');
+      }
+      
 //Funcion para abrir waze o maps
 //iglesia
 function elegirAplicacion() {
